@@ -1,7 +1,7 @@
 :root {
   font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
   color: #13243c;
-  background-color: #f2f7ff;
+  background: radial-gradient(circle at top, #243e6f 0%, #111b2f 45%, #0b1324 100%);
 }
 
 body {
@@ -13,47 +13,27 @@ body {
 }
 
 .app {
-  width: min(95vw, 760px);
-  background: #fff;
+  width: min(95vw, 860px);
+  background: #f8fbff;
   border-radius: 16px;
   padding: 1.1rem;
-  box-shadow: 0 8px 20px rgba(12, 28, 51, 0.14);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
 }
 
 h1,
-h2 {
-  margin-top: 0;
-  text-align: center;
-}
-
-.description {
-  margin-top: 0;
-  text-align: center;
-}
+h2 { margin-top: 0; text-align: center; }
 
 .panel {
   border: 2px solid #d6e4ff;
   border-radius: 12px;
   padding: 0.8rem;
   margin-top: 0.85rem;
+  background: #fff;
 }
 
-.hidden {
-  display: none;
-}
+.hidden { display: none; }
 
-
-.mode-buttons {
-  display: grid;
-  gap: 0.6rem;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-#back-to-mode-button {
-  margin-top: 0.75rem;
-  width: 100%;
-}
-
+.character-grid,
 .level-grid {
   display: grid;
   gap: 0.5rem;
@@ -61,6 +41,7 @@ h2 {
   margin-top: 0.6rem;
 }
 
+.character-button,
 .level-button {
   display: flex;
   flex-direction: column;
@@ -72,9 +53,21 @@ h2 {
   border: 1px solid #bfd3f8;
 }
 
-.level-button span {
-  font-size: 0.88rem;
+.character-button.active {
+  background: #2459b5;
+  color: #fff;
 }
+
+.level-button span { font-size: 0.88rem; }
+
+.mode-buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+#back-to-mode-button { margin-top: 0.75rem; width: 100%; }
 
 .info-panel {
   display: flex;
@@ -83,28 +76,17 @@ h2 {
   gap: 0.6rem;
 }
 
-.info-panel p {
-  margin: 0;
-}
+.info-panel p,
+.status p { margin: 0; }
 
 .status {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   gap: 0.5rem;
 }
 
-.status p {
-  margin: 0;
-}
-
-.question-area {
-  text-align: center;
-}
-
-#question-label {
-  font-size: 1.7rem;
-  margin: 0.4rem 0 1rem;
-}
+.question-area { text-align: center; position: relative; overflow: hidden; }
+#question-label { font-size: 1.7rem; margin: 0.4rem 0 1rem; }
 
 form {
   display: flex;
@@ -122,22 +104,11 @@ button {
   border: 1px solid #9bb7e8;
 }
 
-input {
-  text-align: center;
-  font-size: 1.4rem;
-  width: 180px;
-}
+input { text-align: center; font-size: 1.4rem; width: 180px; }
 
-button {
-  background: #2459b5;
-  color: #fff;
-  border: none;
-}
-
+button { background: #2459b5; color: #fff; border: none; }
 button:disabled,
-input:disabled {
-  opacity: 0.5;
-}
+input:disabled { opacity: 0.5; }
 
 .numpad {
   margin-top: 1rem;
@@ -148,51 +119,43 @@ input:disabled {
   margin-inline: auto;
 }
 
-.key {
-  min-height: 56px;
-  font-size: 1.3rem;
-  font-weight: 700;
+.key { min-height: 56px; font-size: 1.3rem; font-weight: 700; }
+.key.enter { grid-column: 1 / -1; background: #137a2f; }
+.controls { text-align: center; }
+#feedback { min-height: 1.4rem; margin: 0.6rem 0 0; font-weight: 700; }
+
+.effect-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 3rem;
+  font-weight: 900;
+  color: #fff;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.6);
 }
 
-.key.enter {
-  grid-column: 1 / -1;
-  background: #137a2f;
+.effect-overlay.show {
+  animation: pop 0.55s ease-out;
 }
 
-.controls {
-  text-align: center;
-}
+.effect-overlay.attack { background: rgba(20, 116, 43, 0.55); }
+.effect-overlay.damage { background: rgba(177, 24, 24, 0.55); }
+.effect-overlay.win { background: rgba(255, 187, 0, 0.6); }
+.effect-overlay.lose { background: rgba(51, 51, 51, 0.7); }
 
-#feedback {
-  min-height: 1.4rem;
-  margin: 0.6rem 0 0;
-  font-weight: 700;
-}
-
-.correct {
-  color: #006d2f;
-}
-
-.incorrect {
-  color: #b31217;
+@keyframes pop {
+  0% { opacity: 0; transform: scale(0.6); }
+  30% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0; transform: scale(1); }
 }
 
 @media (max-width: 520px) {
-  #question-label {
-    font-size: 1.3rem;
-  }
-
-  .info-panel {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  input,
-  button {
-    width: 100%;
-  }
-
-  .numpad {
-    max-width: 100%;
-  }
+  #question-label { font-size: 1.3rem; }
+  .info-panel { flex-direction: column; align-items: stretch; }
+  .mode-buttons { flex-direction: column; }
+  input, button { width: 100%; }
+  .numpad { max-width: 100%; }
 }
