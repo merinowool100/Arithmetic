@@ -1,40 +1,40 @@
 const ROUND_SIZE = 10;
 
 const PLAYER_CHARACTERS = [
-  { name: "ヘラクレスオオカブト", icon: "🪲", color: "#2f6f2f" },
-  { name: "スマトラオオヒラタクワガタ", icon: "🪲", color: "#245b7f" },
-  { name: "スピノサウルス", icon: "🦖", color: "#6a6f2a" },
-  { name: "ティラノサウルス", icon: "🦖", color: "#7a3e2a" },
-  { name: "ティタノボア", icon: "🐍", color: "#406b3f" },
-  { name: "ファイアードレイク", icon: "🐉", color: "#8b2e2e" },
+  { name: "ヘラクレスオオカブト", image: "assets/characters/hercules.png" },
+  { name: "スマトラオオヒラタクワガタ", image: "assets/characters/sumatra.png" },
+  { name: "スピノサウルス", image: "assets/characters/spino.png" },
+  { name: "ティラノサウルス", image: "assets/characters/tyranno.png" },
+  { name: "ティタノボア", image: "assets/characters/titanoboa.png" },
+  { name: "ファイアードレイク", image: "assets/characters/firedrake.png" },
 ];
 
 const ENEMIES = [
-  { name: "ミイデラゴミムシ", icon: "🪲", color: "#6f5f2f" },
-  { name: "パラケラテリウム", icon: "🦣", color: "#6e6a56" },
-  { name: "スミロドン", icon: "🐅", color: "#8a5e3a" },
-  { name: "アルゲンタヴィス", icon: "🦅", color: "#5a5f78" },
-  { name: "ネプチューンオオカブト", icon: "🪲", color: "#345d8b" },
-  { name: "ライオン", icon: "🦁", color: "#9b6f2d" },
-  { name: "キリン", icon: "🦒", color: "#b88944" },
-  { name: "カバ", icon: "🦛", color: "#6a5d73" },
-  { name: "プルスサウルス", icon: "🐊", color: "#4a6b3e" },
-  { name: "ホホジロザメ", icon: "🦈", color: "#56708e" },
-  { name: "メガロドン", icon: "🦈", color: "#3f4f66" },
-  { name: "テリジノサウルス", icon: "🦖", color: "#6e4f3f" },
-  { name: "アロサウルス", icon: "🦖", color: "#7f4a35" },
-  { name: "トリケラトプス", icon: "🦖", color: "#5f6f4b" },
-  { name: "オニヤンマ", icon: "🪰", color: "#4f6f9a" },
-  { name: "デスストーカー", icon: "🦂", color: "#6a4f3a" },
-  { name: "コーカサスオオカブト", icon: "🪲", color: "#3d547c" },
-  { name: "アルゼンチノサウルス", icon: "🦕", color: "#6b7a5a" },
-  { name: "インペリアルマンモス", icon: "🦣", color: "#645a4a" },
-  { name: "オオエンマハンミョウ", icon: "🪲", color: "#7a3f3f" },
-  { name: "応龍", icon: "🐉", color: "#5f4f8a" },
-  { name: "レインボーサーペント", icon: "🐍", color: "#5c3f8a" },
-  { name: "ムシュフシュ", icon: "🐉", color: "#3f7a7a" },
-  { name: "ヒュドラ", icon: "🐉", color: "#5f7a3a" },
-  { name: "ヴリトラ", icon: "🐉", color: "#7a3a5c" },
+  { name: "ミイデラゴミムシ", image: "assets/enemies/miidera.png" },
+  { name: "パラケラテリウム", image: "assets/enemies/paraceratherium.png" },
+  { name: "スミロドン", image: "assets/enemies/smilodon.png" },
+  { name: "アルゲンタヴィス", image: "assets/enemies/argentavis.png" },
+  { name: "ネプチューンオオカブト", image: "assets/enemies/neptune.png" },
+  { name: "ライオン", image: "assets/enemies/lion.png" },
+  { name: "キリン", image: "assets/enemies/giraffe.png" },
+  { name: "カバ", image: "assets/enemies/hippo.png" },
+  { name: "プルスサウルス", image: "assets/enemies/purussaurus.png" },
+  { name: "ホホジロザメ", image: "assets/enemies/shark.png" },
+  { name: "メガロドン", image: "assets/enemies/megalodon.png" },
+  { name: "テリジノサウルス", image: "assets/enemies/therizino.png" },
+  { name: "アロサウルス", image: "assets/enemies/allosaurus.png" },
+  { name: "トリケラトプス", image: "assets/enemies/triceratops.png" },
+  { name: "オニヤンマ", image: "assets/enemies/oniyanma.png" },
+  { name: "デスストーカー", image: "assets/enemies/deathstalker.png" },
+  { name: "コーカサスオオカブト", image: "assets/enemies/caucasus.png" },
+  { name: "アルゼンチノサウルス", image: "assets/enemies/argentinosaurus.png" },
+  { name: "インペリアルマンモス", image: "assets/enemies/imperial_mammoth.png" },
+  { name: "オオエンマハンミョウ", image: "assets/enemies/enma.png" },
+  { name: "応龍", image: "assets/enemies/ou_ryu.png" },
+  { name: "レインボーサーペント", image: "assets/enemies/rainbow_serpent.png" },
+  { name: "ムシュフシュ", image: "assets/enemies/mushhushshu.png" },
+  { name: "ヒュドラ", image: "assets/enemies/hydra.png" },
+  { name: "ヴリトラ", image: "assets/enemies/vritra.png" },
 ];
 
 const ARITHMETIC_LEVELS = [
@@ -105,11 +105,6 @@ let askedSet = new Set();
 const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
 const buildQuestion = (a, op, b) => ({ text: `${a} ${op} ${b} = ?`, answer: op === "+" ? a + b : op === "-" ? a - b : a * b });
-
-function makeAvatarData(icon, color) {
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><rect width='100%' height='100%' rx='24' fill='${color}'/><text x='50%' y='56%' text-anchor='middle' font-size='120'>${icon}</text></svg>`;
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-}
 
 function generateArithmeticQuestion(levelId) {
   switch (levelId) {
@@ -194,10 +189,10 @@ function updateStatus() {
 
 function setFighters() {
   if (selectedCharacter) {
-    playerImage.src = makeAvatarData(selectedCharacter.icon, selectedCharacter.color);
+    playerImage.src = selectedCharacter.image;
   }
   if (enemyCharacter) {
-    enemyImage.src = makeAvatarData(enemyCharacter.icon, enemyCharacter.color);
+    enemyImage.src = enemyCharacter.image;
   }
 }
 
@@ -309,7 +304,7 @@ function renderCharacterSelect() {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "character-button";
-    button.innerHTML = `<img src="${makeAvatarData(ch.icon, ch.color)}" alt="${ch.name}"><span>${ch.name}</span>`;
+    button.innerHTML = `<img src="${ch.image}" alt="${ch.name}"><span>${ch.name}</span>`;
     button.addEventListener("click", () => {
       selectedCharacter = ch;
       characterGrid.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
