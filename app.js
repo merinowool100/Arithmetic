@@ -1,27 +1,64 @@
 const ROUND_SIZE = 10;
 
+const PLAYER_CHARACTERS = [
+  "ヘラクレスオオカブト",
+  "スマトラオオヒラタクワガタ",
+  "スピノサウルス",
+  "ティラノサウルス",
+  "ティタノボア",
+  "ファイアードレイク",
+];
+
+const ENEMIES = [
+  "ミイデラゴミムシ",
+  "パラケラテリウム",
+  "スミロドン",
+  "アルゲンタヴィス",
+  "ネプチューンオオカブト",
+  "ライオン",
+  "キリン",
+  "カバ",
+  "プルスサウルス",
+  "ホホジロザメ",
+  "メガロドン",
+  "テリジノサウルス",
+  "アロサウルス",
+  "トリケラトプス",
+  "オニヤンマ",
+  "デスストーカー",
+  "コーカサスオオカブト",
+  "アルゼンチノサウルス",
+  "インペリアルマンモス",
+  "オオエンマハンミョウ",
+  "応龍",
+  "レインボーサーペント",
+  "ムシュフシュ",
+  "ヒュドラ",
+  "ヴリトラ",
+];
+
 const ARITHMETIC_LEVELS = [
-  { id: 1, label: "レベル1", desc: "1桁同士の足し算", type: "addition" },
-  { id: 2, label: "レベル2", desc: "2桁+1桁の足し算（合計20まで）", type: "addition" },
-  { id: 3, label: "レベル3", desc: "10の倍数同士の足し算（合計100まで）", type: "addition" },
-  { id: 4, label: "レベル4", desc: "2桁+1桁の足し算（合計100まで）", type: "addition" },
-  { id: 5, label: "レベル5", desc: "2桁+10の倍数の足し算（合計100まで）", type: "addition" },
-  { id: 6, label: "レベル6", desc: "2桁同士の足し算（合計100まで）", type: "addition" },
-  { id: 7, label: "レベル7", desc: "1桁同士の引き算（答えは正の数）", type: "subtraction" },
-  { id: 8, label: "レベル8", desc: "10~20からの1桁の引き算", type: "subtraction" },
-  { id: 9, label: "レベル9", desc: "10の倍数同士の引き算（10~100）", type: "subtraction" },
-  { id: 10, label: "レベル10", desc: "2桁-1桁（繰り下がりなし）", type: "subtraction" },
-  { id: 11, label: "レベル11", desc: "2桁-10の倍数（答えは正の数）", type: "subtraction" },
-  { id: 12, label: "レベル12", desc: "2桁同士の引き算（繰り下がりなし）", type: "subtraction" },
-  { id: 13, label: "レベル13", desc: "2桁+1桁（繰り上がりあり・100まで）", type: "addition" },
-  { id: 14, label: "レベル14", desc: "2桁-1桁（繰り下がりあり）", type: "subtraction" },
-  { id: 15, label: "レベル15", desc: "2桁と2桁の足し算（繰り上がりあり、100まで）", type: "addition" },
-  { id: 16, label: "レベル16", desc: "2桁と2桁の引き算（繰り下がりあり）", type: "subtraction" },
-  { id: 17, label: "レベル17", desc: "2桁と1桁の足し算引き算（繰り上がりあり、答えは正の数）", type: "mixed" },
-  { id: 18, label: "レベル18", desc: "2桁と2桁の足し算引き算（繰り上がり繰り下がりあり、答えは正の数）", type: "mixed" },
-  { id: 19, label: "レベル19", desc: "3桁と1~2桁の足し算（繰り上がりありが問題数の60%、200未満の数同士、答えは正の数）", type: "addition" },
-  { id: 20, label: "レベル20", desc: "3桁と1~2桁の引き算（繰り下がりありが問題数の60%、200未満の数同士、答えは正の数）", type: "subtraction" },
-  { id: 21, label: "レベル21", desc: "3桁と1~2桁の足し算引き算（繰り上がり繰り下がりありが問題数の60%、合計が1000を超えない正の数）", type: "mixed" },
+  { id: 1, label: "レベル1", desc: "1桁同士の足し算" },
+  { id: 2, label: "レベル2", desc: "2桁+1桁の足し算（合計20まで）" },
+  { id: 3, label: "レベル3", desc: "10の倍数同士の足し算（合計100まで）" },
+  { id: 4, label: "レベル4", desc: "2桁+1桁の足し算（合計100まで）" },
+  { id: 5, label: "レベル5", desc: "2桁+10の倍数の足し算（合計100まで）" },
+  { id: 6, label: "レベル6", desc: "2桁同士の足し算（合計100まで）" },
+  { id: 7, label: "レベル7", desc: "1桁同士の引き算（答えは正の数）" },
+  { id: 8, label: "レベル8", desc: "10~20からの1桁の引き算" },
+  { id: 9, label: "レベル9", desc: "10の倍数同士の引き算（10~100）" },
+  { id: 10, label: "レベル10", desc: "2桁-1桁（繰り下がりなし）" },
+  { id: 11, label: "レベル11", desc: "2桁-10の倍数（答えは正の数）" },
+  { id: 12, label: "レベル12", desc: "2桁同士の引き算（繰り下がりなし）" },
+  { id: 13, label: "レベル13", desc: "2桁+1桁（繰り上がりあり・100まで）" },
+  { id: 14, label: "レベル14", desc: "2桁-1桁（繰り下がりあり）" },
+  { id: 15, label: "レベル15", desc: "2桁と2桁の足し算（繰り上がりあり、100まで）" },
+  { id: 16, label: "レベル16", desc: "2桁と2桁の引き算（繰り下がりあり）" },
+  { id: 17, label: "レベル17", desc: "2桁と1桁の足し算引き算（繰り上がりあり、答えは正の数）" },
+  { id: 18, label: "レベル18", desc: "2桁と2桁の足し算引き算（繰り上がり繰り下がりあり、答えは正の数）" },
+  { id: 19, label: "レベル19", desc: "3桁と1~2桁の足し算（繰り上がり60%、200未満）" },
+  { id: 20, label: "レベル20", desc: "3桁と1~2桁の引き算（繰り下がり60%、200未満）" },
+  { id: 21, label: "レベル21", desc: "3桁と1~2桁の足し算引き算（繰り上がり繰り下がり60%、1000以下）" },
 ];
 
 const MULTIPLICATION_LEVELS = [
@@ -32,315 +69,189 @@ const MULTIPLICATION_LEVELS = [
 
 const modeView = document.getElementById("mode-view");
 const levelView = document.getElementById("level-view");
+const gameView = document.getElementById("game-view");
+const levelGrid = document.getElementById("level-grid");
 const levelViewTitle = document.getElementById("level-view-title");
+const selectedLevelLabel = document.getElementById("selected-level-label");
+const characterGrid = document.getElementById("character-grid");
+const selectedCharacterLabel = document.getElementById("selected-character-label");
+const enemyNameEl = document.getElementById("enemy-name");
+const playerHpEl = document.getElementById("player-hp");
+const enemyHpEl = document.getElementById("enemy-hp");
+const solvedCountEl = document.getElementById("solved-count");
+const questionLabel = document.getElementById("question-label");
+const feedbackEl = document.getElementById("feedback");
+const effectOverlay = document.getElementById("effect-overlay");
+const answerForm = document.getElementById("answer-form");
+const answerInput = document.getElementById("answer-input");
+const numpad = document.getElementById("numpad");
+const startButton = document.getElementById("start-button");
 const modeArithmeticButton = document.getElementById("mode-arithmetic");
 const modeMultiplicationButton = document.getElementById("mode-multiplication");
 const backToModeButton = document.getElementById("back-to-mode-button");
-
-const gameView = document.getElementById("game-view");
-const levelGrid = document.getElementById("level-grid");
-const selectedLevelLabel = document.getElementById("selected-level-label");
 const backButton = document.getElementById("back-button");
-
-const timerEl = document.getElementById("timer");
-const solvedCountEl = document.getElementById("solved-count");
-const remainingCountEl = document.getElementById("remaining-count");
-const questionLabel = document.getElementById("question-label");
-const feedbackEl = document.getElementById("feedback");
-const answerForm = document.getElementById("answer-form");
-const answerInput = document.getElementById("answer-input");
-const startButton = document.getElementById("start-button");
-const numpad = document.getElementById("numpad");
 
 let selectedTrack = null;
 let selectedLevel = null;
-let queue = [];
+let selectedCharacter = null;
+let enemyName = "-";
 let currentQuestion = null;
 let solvedCount = 0;
-let timerId = null;
-let startedAt = null;
+let playerHp = 10;
+let enemyHp = ROUND_SIZE;
+let askedSet = new Set();
 
-function randomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
+const buildQuestion = (a, op, b) => ({ text: `${a} ${op} ${b} = ?`, answer: op === "+" ? a + b : op === "-" ? a - b : a * b });
 
-function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i -= 1) {
-    const j = randomInt(0, i);
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-function buildQuestion(a, op, b) {
-  const answer = op === "+" ? a + b : op === "-" ? a - b : a * b;
-  return { text: `${a} ${op} ${b} = ?`, answer };
-}
-
-function parseQuestion(question) {
-  const [left, op, right] = question.text.split(" ");
+function parseQuestion(q) {
+  const [left, op, right] = q.text.split(" ");
   return { a: Number(left), op, b: Number(right) };
 }
 
-function hasCarryForNumbers(a, b) {
+function hasCarry(a, b) {
   return (a % 10) + (b % 10) >= 10;
 }
 
-function hasBorrowForNumbers(a, b) {
+function hasBorrow(a, b) {
   return (a % 10) < (b % 10);
-}
-
-function hasCarryAddition(question) {
-  const { a, b } = parseQuestion(question);
-  return hasCarryForNumbers(a, b);
-}
-
-function hasBorrowSubtraction(question) {
-  const { a, b } = parseQuestion(question);
-  return hasBorrowForNumbers(a, b);
 }
 
 function generateArithmeticQuestion(levelId) {
   switch (levelId) {
-    case 1: {
-      return buildQuestion(randomInt(1, 9), "+", randomInt(1, 9));
-    }
-    case 2: {
-      const a = randomInt(10, 19);
-      const b = randomInt(1, Math.min(9, 20 - a));
-      return buildQuestion(a, "+", b);
-    }
-    case 3: {
-      const a = randomInt(1, 9) * 10;
-      const b = randomInt(1, (100 - a) / 10) * 10;
-      return buildQuestion(a, "+", b);
-    }
-    case 4: {
-      const a = randomInt(10, 99);
-      const b = randomInt(1, Math.min(9, 100 - a));
-      return buildQuestion(a, "+", b);
-    }
-    case 5: {
-      const b = randomInt(1, 9) * 10;
-      const a = randomInt(10, 100 - b);
-      return buildQuestion(a, "+", b);
-    }
-    case 6: {
-      const a = randomInt(10, 90);
-      const b = randomInt(10, 100 - a);
-      return buildQuestion(a, "+", b);
-    }
-    case 7: {
-      const a = randomInt(2, 9);
-      const b = randomInt(1, a - 1);
-      return buildQuestion(a, "-", b);
-    }
-    case 8: {
-      const a = randomInt(10, 20);
-      const b = randomInt(1, Math.min(9, a - 1));
-      return buildQuestion(a, "-", b);
-    }
-    case 9: {
-      const a = randomInt(2, 10) * 10;
-      const b = randomInt(1, a / 10 - 1) * 10;
-      return buildQuestion(a, "-", b);
-    }
-    case 10: {
-      const onesA = randomInt(1, 9);
-      const a = randomInt(1, 9) * 10 + onesA;
-      const b = randomInt(1, onesA);
-      return buildQuestion(a, "-", b);
-    }
-    case 11: {
-      const a = randomInt(20, 99);
-      const b = randomInt(1, Math.floor((a - 1) / 10)) * 10;
-      return buildQuestion(a, "-", b);
-    }
+    case 1: return buildQuestion(randomInt(1, 9), "+", randomInt(1, 9));
+    case 2: { const a = randomInt(10, 19); return buildQuestion(a, "+", randomInt(1, Math.min(9, 20 - a))); }
+    case 3: { const a = randomInt(1, 9) * 10; return buildQuestion(a, "+", randomInt(1, (100 - a) / 10) * 10); }
+    case 4: { const a = randomInt(10, 99); return buildQuestion(a, "+", randomInt(1, Math.min(9, 100 - a))); }
+    case 5: { const b = randomInt(1, 9) * 10; return buildQuestion(randomInt(10, 100 - b), "+", b); }
+    case 6: { const a = randomInt(10, 90); return buildQuestion(a, "+", randomInt(10, 100 - a)); }
+    case 7: { const a = randomInt(2, 9); return buildQuestion(a, "-", randomInt(1, a - 1)); }
+    case 8: { const a = randomInt(10, 20); return buildQuestion(a, "-", randomInt(1, Math.min(9, a - 1))); }
+    case 9: { const a = randomInt(2, 10) * 10; return buildQuestion(a, "-", randomInt(1, a / 10 - 1) * 10); }
+    case 10: { const o = randomInt(1, 9); return buildQuestion(randomInt(1, 9) * 10 + o, "-", randomInt(1, o)); }
+    case 11: { const a = randomInt(20, 99); return buildQuestion(a, "-", randomInt(1, Math.floor((a - 1) / 10)) * 10); }
     case 12: {
-      const tensA = randomInt(2, 9);
-      const onesA = randomInt(0, 9);
-      const tensB = randomInt(1, tensA);
-      const onesB = randomInt(0, onesA);
-      const a = tensA * 10 + onesA;
-      const b = tensB * 10 + onesB;
-      if (a <= b) return generateArithmeticQuestion(12);
-      return buildQuestion(a, "-", b);
+      const ta = randomInt(2, 9), oa = randomInt(0, 9), tb = randomInt(1, ta), ob = randomInt(0, oa);
+      const a = ta * 10 + oa, b = tb * 10 + ob;
+      return a <= b ? generateArithmeticQuestion(12) : buildQuestion(a, "-", b);
     }
     case 13: {
-      const onesA = randomInt(1, 9);
-      const a = randomInt(1, 9) * 10 + onesA;
-      const b = randomInt(10 - onesA, Math.min(9, 100 - a));
-      return buildQuestion(a, "+", b);
+      const oa = randomInt(1, 9), a = randomInt(1, 9) * 10 + oa;
+      return buildQuestion(a, "+", randomInt(10 - oa, Math.min(9, 100 - a)));
     }
-    case 14: {
-      const onesA = randomInt(0, 8);
-      const a = randomInt(2, 9) * 10 + onesA;
-      const b = randomInt(onesA + 1, 9);
-      return buildQuestion(a, "-", b);
-    }
+    case 14: { const oa = randomInt(0, 8); return buildQuestion(randomInt(2, 9) * 10 + oa, "-", randomInt(oa + 1, 9)); }
     case 15: {
-      const a = randomInt(11, 89);
-      const b = randomInt(Math.max(10, 10 - (a % 10)), 100 - a);
-      if (!hasCarryForNumbers(a, b)) return generateArithmeticQuestion(15);
-      return buildQuestion(a, "+", b);
+      const a = randomInt(11, 89), b = randomInt(Math.max(10, 10 - (a % 10)), 100 - a);
+      return hasCarry(a, b) ? buildQuestion(a, "+", b) : generateArithmeticQuestion(15);
     }
     case 16: {
-      const onesA = randomInt(0, 8);
-      const onesB = randomInt(onesA + 1, 9);
-      const tensA = randomInt(2, 9);
-      const tensB = randomInt(1, tensA - 1);
-      return buildQuestion(tensA * 10 + onesA, "-", tensB * 10 + onesB);
+      const oa = randomInt(0, 8), ob = randomInt(oa + 1, 9), ta = randomInt(2, 9), tb = randomInt(1, ta - 1);
+      return buildQuestion(ta * 10 + oa, "-", tb * 10 + ob);
     }
-    case 17:
-      return generateTwoDigitOneDigitMixed();
-    case 18:
-      return generateTwoDigitMixed();
-    case 19:
-      return generateThreeDigitAddition(199);
-    case 20:
-      return generateThreeDigitSubtraction(199);
-    case 21:
-      return generateThreeDigitMixedUnder1000();
-    default:
-      return buildQuestion(1, "+", 1);
+    case 17: return Math.random() < 0.5
+      ? (() => { const oa = randomInt(1, 9), a = randomInt(1, 9) * 10 + oa; return buildQuestion(a, "+", randomInt(10 - oa, 9)); })()
+      : (() => { const a = randomInt(10, 99); return buildQuestion(a, "-", randomInt(1, Math.min(9, a - 1))); })();
+    case 18: return Math.random() < 0.5
+      ? (() => { const a = randomInt(10, 89), b = randomInt(10, 99 - a); return hasCarry(a, b) ? buildQuestion(a, "+", b) : generateArithmeticQuestion(18); })()
+      : (() => { const oa = randomInt(0, 8), ob = randomInt(oa + 1, 9), ta = randomInt(2, 9), tb = randomInt(1, ta - 1); return buildQuestion(ta * 10 + oa, "-", tb * 10 + ob); })();
+    case 19: { const a = randomInt(100, 198); return buildQuestion(a, "+", randomInt(1, Math.min(99, 199 - a))); }
+    case 20: { const a = randomInt(100, 199); return buildQuestion(a, "-", randomInt(1, Math.min(99, a - 1))); }
+    case 21: return Math.random() < 0.5
+      ? (() => { const a = randomInt(100, 998); return buildQuestion(a, "+", randomInt(1, Math.min(99, 999 - a))); })()
+      : (() => { const a = randomInt(100, 999); return buildQuestion(a, "-", randomInt(1, Math.min(99, a - 1))); })();
+    default: return buildQuestion(1, "+", 1);
   }
 }
 
-function generateTwoDigitOneDigitMixed() {
-  if (Math.random() < 0.5) {
-    const onesA = randomInt(1, 9);
-    const a = randomInt(1, 9) * 10 + onesA;
-    const b = randomInt(10 - onesA, 9);
-    return buildQuestion(a, "+", b);
-  }
-
-  const a = randomInt(10, 99);
-  const b = randomInt(1, Math.min(9, a - 1));
-  return buildQuestion(a, "-", b);
-}
-
-function generateTwoDigitMixed() {
-  if (Math.random() < 0.5) {
-    const a = randomInt(10, 89);
-    const b = randomInt(10, 99 - a);
-    if (!hasCarryForNumbers(a, b)) return generateTwoDigitMixed();
-    return buildQuestion(a, "+", b);
-  }
-
-  const onesA = randomInt(0, 8);
-  const onesB = randomInt(onesA + 1, 9);
-  const tensA = randomInt(2, 9);
-  const tensB = randomInt(1, tensA - 1);
-  return buildQuestion(tensA * 10 + onesA, "-", tensB * 10 + onesB);
-}
-
-function generateThreeDigitAddition(limit) {
-  const a = randomInt(100, limit - 1);
-  const b = randomInt(1, Math.min(99, limit - a));
-  return buildQuestion(a, "+", b);
-}
-
-function generateThreeDigitSubtraction(limit) {
-  const a = randomInt(100, limit);
-  const b = randomInt(1, Math.min(99, a - 1));
-  return buildQuestion(a, "-", b);
-}
-
-function generateThreeDigitMixedUnder1000() {
-  return Math.random() < 0.5 ? generateThreeDigitAddition(999) : generateThreeDigitSubtraction(999);
-}
-
-function generateMultiplicationRound(levelId) {
+function generateMultiplicationQuestion(levelId) {
   if (levelId <= 19) {
-    return shuffle(Array.from({ length: ROUND_SIZE }, (_, i) => buildQuestion(levelId, "×", i + 1)));
+    const used = new Set([...askedSet].map((x) => x.split(" = ?")[0]));
+    const options = shuffle(Array.from({ length: 10 }, (_, i) => `${levelId} × ${i + 1}`)).filter((t) => !used.has(t));
+    const [a, , b] = options[0].split(" ");
+    return buildQuestion(Number(a), "×", Number(b));
   }
   if (levelId === 20) {
-    return Array.from({ length: ROUND_SIZE }, () => buildQuestion(randomInt(2, 9), "×", randomInt(2, 9)));
+    return buildQuestion(randomInt(2, 9), "×", randomInt(2, 9));
   }
-  return Array.from({ length: ROUND_SIZE }, () => buildQuestion(randomInt(11, 19), "×", randomInt(2, 9)));
+  return buildQuestion(randomInt(11, 19), "×", randomInt(2, 9));
 }
 
-function generateArithmeticRound(levelId) {
-  if (![19, 20, 21].includes(levelId)) {
-    return Array.from({ length: ROUND_SIZE }, () => generateArithmeticQuestion(levelId));
-  }
-
-  const needWithCarry = 6;
-  const withCarry = [];
-  const withoutCarry = [];
-
-  while (withCarry.length < needWithCarry || withoutCarry.length < ROUND_SIZE - needWithCarry) {
-    const q = generateArithmeticQuestion(levelId);
-    const { op } = parseQuestion(q);
-    const flag = op === "+" ? hasCarryAddition(q) : hasBorrowSubtraction(q);
-
-    if (flag && withCarry.length < needWithCarry) {
-      withCarry.push(q);
-    } else if (!flag && withoutCarry.length < ROUND_SIZE - needWithCarry) {
-      withoutCarry.push(q);
+function generateUniqueQuestion() {
+  for (let i = 0; i < 500; i += 1) {
+    const q = selectedTrack === "multiplication"
+      ? generateMultiplicationQuestion(selectedLevel.id)
+      : generateArithmeticQuestion(selectedLevel.id);
+    if (!askedSet.has(q.text)) {
+      askedSet.add(q.text);
+      return q;
     }
   }
-
-  return shuffle([...withCarry, ...withoutCarry]);
-}
-
-function generateRound() {
-  if (!selectedLevel) return [];
-  return selectedTrack === "multiplication"
-    ? generateMultiplicationRound(selectedLevel.id)
-    : generateArithmeticRound(selectedLevel.id);
-}
-
-function formatElapsed(ms) {
-  const totalSeconds = Math.floor(ms / 1000);
-  const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, "0");
-  const seconds = (totalSeconds % 60).toString().padStart(2, "0");
-  return `${minutes}:${seconds}`;
-}
-
-function updateTimer() {
-  timerEl.textContent = startedAt ? formatElapsed(Date.now() - startedAt) : "00:00";
+  return null;
 }
 
 function updateStatus() {
-  solvedCountEl.textContent = solvedCount.toString();
-  remainingCountEl.textContent = queue.length.toString();
+  selectedCharacterLabel.textContent = selectedCharacter ?? "-";
+  enemyNameEl.textContent = enemyName;
+  playerHpEl.textContent = playerHp;
+  enemyHpEl.textContent = enemyHp;
+  solvedCountEl.textContent = solvedCount;
+}
+
+function showEffect(type, text) {
+  effectOverlay.textContent = text;
+  effectOverlay.className = `effect-overlay show ${type}`;
+  setTimeout(() => {
+    effectOverlay.className = "effect-overlay";
+  }, 550);
+}
+
+function finishBattle(win) {
+  toggleNumpad(false);
+  startButton.disabled = false;
+  currentQuestion = null;
+  if (win) {
+    feedbackEl.textContent = "🏆 Win! 敵をたおした！";
+    questionLabel.textContent = "バトル勝利！";
+    showEffect("win", "WIN");
+  } else {
+    feedbackEl.textContent = "💥 Lose... HPが0になった！";
+    questionLabel.textContent = "バトル敗北...";
+    showEffect("lose", "LOSE");
+  }
 }
 
 function showNextQuestion() {
-  currentQuestion = queue.shift() ?? null;
-  updateStatus();
-  if (!currentQuestion) {
-    finishRound();
+  if (enemyHp <= 0) {
+    finishBattle(true);
     return;
   }
-  questionLabel.textContent = currentQuestion.text;
+  if (playerHp <= 0) {
+    finishBattle(false);
+    return;
+  }
+
+  const q = generateUniqueQuestion();
+  if (!q) {
+    finishBattle(enemyHp === 0);
+    return;
+  }
+  currentQuestion = q;
+  questionLabel.textContent = q.text;
   answerInput.value = "";
 }
 
-function finishRound() {
-  clearInterval(timerId);
-  timerId = null;
-  updateTimer();
-  questionLabel.textContent = "🎉 クリア！おめでとう！";
-  feedbackEl.textContent = `全10問クリア！タイム: ${timerEl.textContent}`;
-  feedbackEl.className = "correct";
-  toggleNumpad(false);
-  startButton.disabled = false;
-}
-
 function startRound() {
-  if (!selectedLevel) return;
-  queue = generateRound();
+  if (!selectedLevel || !selectedCharacter) return;
+  askedSet = new Set();
   solvedCount = 0;
-  startedAt = Date.now();
-  feedbackEl.textContent = "";
-  feedbackEl.className = "";
+  playerHp = 10;
+  enemyHp = ROUND_SIZE;
+  enemyName = ENEMIES[randomInt(0, ENEMIES.length - 1)];
+  feedbackEl.textContent = "バトル開始！";
   startButton.disabled = true;
   toggleNumpad(true);
-  if (timerId) clearInterval(timerId);
-  updateTimer();
-  timerId = setInterval(updateTimer, 250);
+  updateStatus();
   showNextQuestion();
 }
 
@@ -349,88 +260,28 @@ function judgeAnswer(event) {
   if (!currentQuestion || answerInput.value === "") return;
 
   if (Number(answerInput.value) === currentQuestion.answer) {
+    enemyHp -= 1;
     solvedCount += 1;
-    feedbackEl.textContent = "⭕ 正解！";
-    feedbackEl.className = "correct";
+    feedbackEl.textContent = "⚔️ こうげき成功！";
+    showEffect("attack", "ATTACK");
   } else {
-    queue.push(currentQuestion);
-    feedbackEl.textContent = `❌ ちがうよ。正解は ${currentQuestion.answer}。もう一度あとで出るよ。`;
-    feedbackEl.className = "incorrect";
+    playerHp -= 1;
+    feedbackEl.textContent = `🩸 ダメージ！正解は ${currentQuestion.answer}`;
+    showEffect("damage", "DAMAGE");
   }
+  updateStatus();
   showNextQuestion();
 }
 
-function appendDigit(value) {
+function appendDigit(v) {
   if (startButton.disabled === false || !currentQuestion) return;
-  answerInput.value = answerInput.value === "0" ? value : answerInput.value + value;
+  answerInput.value = answerInput.value === "0" ? v : answerInput.value + v;
 }
 
 function toggleNumpad(enabled) {
-  numpad.querySelectorAll("button").forEach((button) => {
-    button.disabled = !enabled;
+  numpad.querySelectorAll("button").forEach((b) => {
+    b.disabled = !enabled;
   });
-}
-
-function resetGameState() {
-  if (timerId) {
-    clearInterval(timerId);
-    timerId = null;
-  }
-  queue = [];
-  currentQuestion = null;
-  solvedCount = 0;
-  startedAt = null;
-  answerInput.value = "";
-  updateTimer();
-  updateStatus();
-  startButton.disabled = false;
-  toggleNumpad(false);
-  feedbackEl.textContent = "";
-  feedbackEl.className = "";
-  questionLabel.textContent = "「ラウンド開始」を押してください。";
-}
-
-function showModeView() {
-  selectedTrack = null;
-  selectedLevel = null;
-  resetGameState();
-  gameView.classList.add("hidden");
-  levelView.classList.add("hidden");
-  modeView.classList.remove("hidden");
-}
-
-function showLevelView(track) {
-  selectedTrack = track;
-  selectedLevel = null;
-  resetGameState();
-
-  const levels = track === "multiplication" ? MULTIPLICATION_LEVELS : ARITHMETIC_LEVELS;
-  levelViewTitle.textContent = track === "multiplication" ? "掛け算のレベルを選んでね" : "足し算・引き算のレベルを選んでね";
-  levelGrid.innerHTML = "";
-
-  levels.forEach((level) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "level-button";
-    button.innerHTML = `<strong>${level.label}</strong><span>${level.desc}</span>`;
-    button.addEventListener("click", () => {
-      selectedLevel = level;
-      selectedLevelLabel.textContent = `${selectedTrack === "multiplication" ? "掛け算" : "足し算・引き算"} / ${level.label}：${level.desc}`;
-      levelView.classList.add("hidden");
-      gameView.classList.remove("hidden");
-    });
-    levelGrid.appendChild(button);
-  });
-
-  modeView.classList.add("hidden");
-  gameView.classList.add("hidden");
-  levelView.classList.remove("hidden");
-}
-
-function backToLevelView() {
-  resetGameState();
-  gameView.classList.add("hidden");
-  levelView.classList.remove("hidden");
 }
 
 function renderNumpad() {
@@ -438,8 +289,8 @@ function renderNumpad() {
   keys.forEach((key) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.textContent = key;
     button.className = "key";
+    button.textContent = key;
     button.addEventListener("click", () => {
       if (/^\d$/.test(key)) appendDigit(key);
       else if (key === "C") answerInput.value = "";
@@ -448,22 +299,92 @@ function renderNumpad() {
     numpad.appendChild(button);
   });
 
-  const enterButton = document.createElement("button");
-  enterButton.type = "button";
-  enterButton.className = "key enter";
-  enterButton.textContent = "回答";
-  enterButton.addEventListener("click", () => answerForm.requestSubmit());
-  numpad.appendChild(enterButton);
-
+  const enter = document.createElement("button");
+  enter.type = "button";
+  enter.className = "key enter";
+  enter.textContent = "回答";
+  enter.addEventListener("click", () => answerForm.requestSubmit());
+  numpad.appendChild(enter);
   toggleNumpad(false);
 }
 
-modeArithmeticButton.addEventListener("click", () => showLevelView("arithmetic"));
-modeMultiplicationButton.addEventListener("click", () => showLevelView("multiplication"));
-backToModeButton.addEventListener("click", showModeView);
-backButton.addEventListener("click", backToLevelView);
-startButton.addEventListener("click", startRound);
-answerForm.addEventListener("submit", judgeAnswer);
+function renderCharacterSelect() {
+  PLAYER_CHARACTERS.forEach((name) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "character-button";
+    button.textContent = name;
+    button.addEventListener("click", () => {
+      selectedCharacter = name;
+      characterGrid.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
+      button.classList.add("active");
+      selectedCharacterLabel.textContent = selectedCharacter;
+    });
+    characterGrid.appendChild(button);
+  });
+}
 
+function renderLevels(track) {
+  levelGrid.innerHTML = "";
+  const levels = track === "multiplication" ? MULTIPLICATION_LEVELS : ARITHMETIC_LEVELS;
+  levelViewTitle.textContent = track === "multiplication" ? "掛け算のレベルを選んでね" : "足し算・引き算のレベルを選んでね";
+
+  levels.forEach((level) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "level-button";
+    button.innerHTML = `<strong>${level.label}</strong><span>${level.desc}</span>`;
+    button.addEventListener("click", () => {
+      selectedLevel = level;
+      selectedLevelLabel.textContent = `${level.label}：${level.desc}`;
+      levelView.classList.add("hidden");
+      gameView.classList.remove("hidden");
+      enemyName = "???";
+      updateStatus();
+      questionLabel.textContent = "「ラウンド開始」を押してください。";
+      feedbackEl.textContent = "";
+      startButton.disabled = false;
+      toggleNumpad(false);
+      effectOverlay.className = "effect-overlay";
+      currentQuestion = null;
+    });
+    levelGrid.appendChild(button);
+  });
+}
+
+function showModeView() {
+  modeView.classList.remove("hidden");
+  levelView.classList.add("hidden");
+  gameView.classList.add("hidden");
+}
+
+modeArithmeticButton.addEventListener("click", () => {
+  selectedTrack = "arithmetic";
+  renderLevels(selectedTrack);
+  modeView.classList.add("hidden");
+  levelView.classList.remove("hidden");
+});
+
+modeMultiplicationButton.addEventListener("click", () => {
+  selectedTrack = "multiplication";
+  renderLevels(selectedTrack);
+  modeView.classList.add("hidden");
+  levelView.classList.remove("hidden");
+});
+
+backToModeButton.addEventListener("click", showModeView);
+backButton.addEventListener("click", () => {
+  gameView.classList.add("hidden");
+  levelView.classList.remove("hidden");
+  toggleNumpad(false);
+  currentQuestion = null;
+  startButton.disabled = false;
+});
+
+answerForm.addEventListener("submit", judgeAnswer);
+startButton.addEventListener("click", startRound);
+
+renderCharacterSelect();
 renderNumpad();
+updateStatus();
 showModeView();
