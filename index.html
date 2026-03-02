@@ -33,20 +33,30 @@
           <button id="back-button" type="button">レベル選択に戻る</button>
         </section>
 
-        <section class="panel status" aria-live="polite">
-          <p><strong>自分HP:</strong> <span id="player-hp">10</span></p>
-          <p><strong>敵:</strong> <span id="enemy-name">-</span></p>
-          <p><strong>敵HP:</strong> <span id="enemy-hp">10</span></p>
-          <p><strong>与えたダメージ:</strong> <span id="solved-count">0</span></p>
-        </section>
+        <section class="panel battle-layout" aria-live="polite">
+          <div class="fighter" id="player-fighter">
+            <img id="player-image" alt="自分のキャラクター画像" />
+            <p id="player-name">-</p>
+            <p><strong>自分HP:</strong> <span id="player-hp">10</span></p>
+          </div>
 
-        <section class="panel question-area">
-          <p id="question-label">「ラウンド開始」を押してください。</p>
-          <form id="answer-form" autocomplete="off">
-            <label for="answer-input">答え</label>
-            <input id="answer-input" name="answer" type="text" inputmode="none" readonly required />
-          </form>
-          <div id="numpad" class="numpad" aria-label="テンキー"></div>
+          <div class="battle-center question-area">
+            <p id="question-label">「ラウンド開始」を押してください。</p>
+            <form id="answer-form" autocomplete="off">
+              <label for="answer-input">答え</label>
+              <input id="answer-input" name="answer" type="text" inputmode="none" readonly required />
+            </form>
+            <div id="numpad" class="numpad" aria-label="テンキー"></div>
+            <p><strong>与えたダメージ:</strong> <span id="solved-count">0</span></p>
+          </div>
+
+          <div class="fighter enemy" id="enemy-fighter">
+            <img id="enemy-image" alt="敵キャラクター画像" />
+            <p id="enemy-name">-</p>
+            <p><strong>敵HP:</strong> <span id="enemy-hp">10</span></p>
+            <p id="victory-text" class="hidden">勝利</p>
+          </div>
+
           <div id="effect-overlay" class="effect-overlay" aria-live="assertive"></div>
         </section>
 
