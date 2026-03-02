@@ -3,15 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>四則演算トレーニング</title>
+    <title>算数バトル</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="app">
-      <h1>四則演算トレーニング</h1>
+      <h1>🛡️ 算数バトルゲーム ⚔️</h1>
 
       <section id="mode-view" class="panel">
-        <h2>まずは種類をえらんでね</h2>
+        <h2>キャラを選んで、バトルの種類を選ぼう！</h2>
+        <p><strong>自分のキャラ:</strong> <span id="selected-character-label">-</span></p>
+        <div id="character-grid" class="character-grid" aria-label="キャラクター一覧"></div>
         <div class="mode-buttons">
           <button id="mode-arithmetic" type="button">足し算・引き算</button>
           <button id="mode-multiplication" type="button">掛け算</button>
@@ -20,7 +22,7 @@
 
       <section id="level-view" class="panel hidden">
         <h2 id="level-view-title">レベルを選んでね</h2>
-        <p class="description">1ラウンド10問。間違えた問題は最後に回って、正解するまで続きます。</p>
+        <p class="description">同じ問題は1ラウンド中に出ません。</p>
         <div id="level-grid" class="level-grid" aria-label="レベル一覧"></div>
         <button id="back-to-mode-button" type="button">種類選択に戻る</button>
       </section>
@@ -32,9 +34,10 @@
         </section>
 
         <section class="panel status" aria-live="polite">
-          <p><strong>経過時間:</strong> <span id="timer">00:00</span></p>
-          <p><strong>正解した問題数:</strong> <span id="solved-count">0</span> / 10</p>
-          <p><strong>残り問題数:</strong> <span id="remaining-count">10</span></p>
+          <p><strong>自分HP:</strong> <span id="player-hp">10</span></p>
+          <p><strong>敵:</strong> <span id="enemy-name">-</span></p>
+          <p><strong>敵HP:</strong> <span id="enemy-hp">10</span></p>
+          <p><strong>与えたダメージ:</strong> <span id="solved-count">0</span></p>
         </section>
 
         <section class="panel question-area">
@@ -44,6 +47,7 @@
             <input id="answer-input" name="answer" type="text" inputmode="none" readonly required />
           </form>
           <div id="numpad" class="numpad" aria-label="テンキー"></div>
+          <div id="effect-overlay" class="effect-overlay" aria-live="assertive"></div>
         </section>
 
         <section class="panel controls">
