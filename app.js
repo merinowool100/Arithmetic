@@ -1,40 +1,40 @@
 const ROUND_SIZE = 10;
 
 const PLAYER_CHARACTERS = [
-  "ヘラクレスオオカブト",
-  "スマトラオオヒラタクワガタ",
-  "スピノサウルス",
-  "ティラノサウルス",
-  "ティタノボア",
-  "ファイアードレイク",
+  { name: "ヘラクレスオオカブト", icon: "🪲", color: "#2f6f2f" },
+  { name: "スマトラオオヒラタクワガタ", icon: "🪲", color: "#245b7f" },
+  { name: "スピノサウルス", icon: "🦖", color: "#6a6f2a" },
+  { name: "ティラノサウルス", icon: "🦖", color: "#7a3e2a" },
+  { name: "ティタノボア", icon: "🐍", color: "#406b3f" },
+  { name: "ファイアードレイク", icon: "🐉", color: "#8b2e2e" },
 ];
 
 const ENEMIES = [
-  "ミイデラゴミムシ",
-  "パラケラテリウム",
-  "スミロドン",
-  "アルゲンタヴィス",
-  "ネプチューンオオカブト",
-  "ライオン",
-  "キリン",
-  "カバ",
-  "プルスサウルス",
-  "ホホジロザメ",
-  "メガロドン",
-  "テリジノサウルス",
-  "アロサウルス",
-  "トリケラトプス",
-  "オニヤンマ",
-  "デスストーカー",
-  "コーカサスオオカブト",
-  "アルゼンチノサウルス",
-  "インペリアルマンモス",
-  "オオエンマハンミョウ",
-  "応龍",
-  "レインボーサーペント",
-  "ムシュフシュ",
-  "ヒュドラ",
-  "ヴリトラ",
+  { name: "ミイデラゴミムシ", icon: "🪲", color: "#6f5f2f" },
+  { name: "パラケラテリウム", icon: "🦣", color: "#6e6a56" },
+  { name: "スミロドン", icon: "🐅", color: "#8a5e3a" },
+  { name: "アルゲンタヴィス", icon: "🦅", color: "#5a5f78" },
+  { name: "ネプチューンオオカブト", icon: "🪲", color: "#345d8b" },
+  { name: "ライオン", icon: "🦁", color: "#9b6f2d" },
+  { name: "キリン", icon: "🦒", color: "#b88944" },
+  { name: "カバ", icon: "🦛", color: "#6a5d73" },
+  { name: "プルスサウルス", icon: "🐊", color: "#4a6b3e" },
+  { name: "ホホジロザメ", icon: "🦈", color: "#56708e" },
+  { name: "メガロドン", icon: "🦈", color: "#3f4f66" },
+  { name: "テリジノサウルス", icon: "🦖", color: "#6e4f3f" },
+  { name: "アロサウルス", icon: "🦖", color: "#7f4a35" },
+  { name: "トリケラトプス", icon: "🦖", color: "#5f6f4b" },
+  { name: "オニヤンマ", icon: "🪰", color: "#4f6f9a" },
+  { name: "デスストーカー", icon: "🦂", color: "#6a4f3a" },
+  { name: "コーカサスオオカブト", icon: "🪲", color: "#3d547c" },
+  { name: "アルゼンチノサウルス", icon: "🦕", color: "#6b7a5a" },
+  { name: "インペリアルマンモス", icon: "🦣", color: "#645a4a" },
+  { name: "オオエンマハンミョウ", icon: "🪲", color: "#7a3f3f" },
+  { name: "応龍", icon: "🐉", color: "#5f4f8a" },
+  { name: "レインボーサーペント", icon: "🐍", color: "#5c3f8a" },
+  { name: "ムシュフシュ", icon: "🐉", color: "#3f7a7a" },
+  { name: "ヒュドラ", icon: "🐉", color: "#5f7a3a" },
+  { name: "ヴリトラ", icon: "🐉", color: "#7a3a5c" },
 ];
 
 const ARITHMETIC_LEVELS = [
@@ -73,8 +73,11 @@ const gameView = document.getElementById("game-view");
 const levelGrid = document.getElementById("level-grid");
 const levelViewTitle = document.getElementById("level-view-title");
 const selectedLevelLabel = document.getElementById("selected-level-label");
-const characterGrid = document.getElementById("character-grid");
 const selectedCharacterLabel = document.getElementById("selected-character-label");
+const characterGrid = document.getElementById("character-grid");
+const playerImage = document.getElementById("player-image");
+const enemyImage = document.getElementById("enemy-image");
+const playerNameEl = document.getElementById("player-name");
 const enemyNameEl = document.getElementById("enemy-name");
 const playerHpEl = document.getElementById("player-hp");
 const enemyHpEl = document.getElementById("enemy-hp");
@@ -82,19 +85,17 @@ const solvedCountEl = document.getElementById("solved-count");
 const questionLabel = document.getElementById("question-label");
 const feedbackEl = document.getElementById("feedback");
 const effectOverlay = document.getElementById("effect-overlay");
+const enemyFighter = document.getElementById("enemy-fighter");
+const victoryText = document.getElementById("victory-text");
 const answerForm = document.getElementById("answer-form");
 const answerInput = document.getElementById("answer-input");
 const numpad = document.getElementById("numpad");
 const startButton = document.getElementById("start-button");
-const modeArithmeticButton = document.getElementById("mode-arithmetic");
-const modeMultiplicationButton = document.getElementById("mode-multiplication");
-const backToModeButton = document.getElementById("back-to-mode-button");
-const backButton = document.getElementById("back-button");
 
 let selectedTrack = null;
 let selectedLevel = null;
 let selectedCharacter = null;
-let enemyName = "-";
+let enemyCharacter = null;
 let currentQuestion = null;
 let solvedCount = 0;
 let playerHp = 10;
@@ -105,17 +106,9 @@ const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + mi
 const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
 const buildQuestion = (a, op, b) => ({ text: `${a} ${op} ${b} = ?`, answer: op === "+" ? a + b : op === "-" ? a - b : a * b });
 
-function parseQuestion(q) {
-  const [left, op, right] = q.text.split(" ");
-  return { a: Number(left), op, b: Number(right) };
-}
-
-function hasCarry(a, b) {
-  return (a % 10) + (b % 10) >= 10;
-}
-
-function hasBorrow(a, b) {
-  return (a % 10) < (b % 10);
+function makeAvatarData(icon, color) {
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><rect width='100%' height='100%' rx='24' fill='${color}'/><text x='50%' y='56%' text-anchor='middle' font-size='120'>${icon}</text></svg>`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
 function generateArithmeticQuestion(levelId) {
@@ -143,7 +136,7 @@ function generateArithmeticQuestion(levelId) {
     case 14: { const oa = randomInt(0, 8); return buildQuestion(randomInt(2, 9) * 10 + oa, "-", randomInt(oa + 1, 9)); }
     case 15: {
       const a = randomInt(11, 89), b = randomInt(Math.max(10, 10 - (a % 10)), 100 - a);
-      return hasCarry(a, b) ? buildQuestion(a, "+", b) : generateArithmeticQuestion(15);
+      return (a % 10) + (b % 10) >= 10 ? buildQuestion(a, "+", b) : generateArithmeticQuestion(15);
     }
     case 16: {
       const oa = randomInt(0, 8), ob = randomInt(oa + 1, 9), ta = randomInt(2, 9), tb = randomInt(1, ta - 1);
@@ -153,7 +146,7 @@ function generateArithmeticQuestion(levelId) {
       ? (() => { const oa = randomInt(1, 9), a = randomInt(1, 9) * 10 + oa; return buildQuestion(a, "+", randomInt(10 - oa, 9)); })()
       : (() => { const a = randomInt(10, 99); return buildQuestion(a, "-", randomInt(1, Math.min(9, a - 1))); })();
     case 18: return Math.random() < 0.5
-      ? (() => { const a = randomInt(10, 89), b = randomInt(10, 99 - a); return hasCarry(a, b) ? buildQuestion(a, "+", b) : generateArithmeticQuestion(18); })()
+      ? (() => { const a = randomInt(10, 89), b = randomInt(10, 99 - a); return (a % 10) + (b % 10) >= 10 ? buildQuestion(a, "+", b) : generateArithmeticQuestion(18); })()
       : (() => { const oa = randomInt(0, 8), ob = randomInt(oa + 1, 9), ta = randomInt(2, 9), tb = randomInt(1, ta - 1); return buildQuestion(ta * 10 + oa, "-", tb * 10 + ob); })();
     case 19: { const a = randomInt(100, 198); return buildQuestion(a, "+", randomInt(1, Math.min(99, 199 - a))); }
     case 20: { const a = randomInt(100, 199); return buildQuestion(a, "-", randomInt(1, Math.min(99, a - 1))); }
@@ -168,20 +161,20 @@ function generateMultiplicationQuestion(levelId) {
   if (levelId <= 19) {
     const used = new Set([...askedSet].map((x) => x.split(" = ?")[0]));
     const options = shuffle(Array.from({ length: 10 }, (_, i) => `${levelId} × ${i + 1}`)).filter((t) => !used.has(t));
+    if (!options.length) return null;
     const [a, , b] = options[0].split(" ");
     return buildQuestion(Number(a), "×", Number(b));
   }
-  if (levelId === 20) {
-    return buildQuestion(randomInt(2, 9), "×", randomInt(2, 9));
-  }
+  if (levelId === 20) return buildQuestion(randomInt(2, 9), "×", randomInt(2, 9));
   return buildQuestion(randomInt(11, 19), "×", randomInt(2, 9));
 }
 
 function generateUniqueQuestion() {
-  for (let i = 0; i < 500; i += 1) {
+  for (let i = 0; i < 600; i += 1) {
     const q = selectedTrack === "multiplication"
       ? generateMultiplicationQuestion(selectedLevel.id)
       : generateArithmeticQuestion(selectedLevel.id);
+    if (!q) continue;
     if (!askedSet.has(q.text)) {
       askedSet.add(q.text);
       return q;
@@ -191,64 +184,67 @@ function generateUniqueQuestion() {
 }
 
 function updateStatus() {
-  selectedCharacterLabel.textContent = selectedCharacter ?? "-";
-  enemyNameEl.textContent = enemyName;
+  selectedCharacterLabel.textContent = selectedCharacter?.name ?? "-";
+  playerNameEl.textContent = selectedCharacter?.name ?? "-";
+  enemyNameEl.textContent = enemyCharacter?.name ?? "-";
   playerHpEl.textContent = playerHp;
   enemyHpEl.textContent = enemyHp;
   solvedCountEl.textContent = solvedCount;
 }
 
-function showEffect(type, text) {
-  effectOverlay.textContent = text;
-  effectOverlay.className = `effect-overlay show ${type}`;
+function setFighters() {
+  if (selectedCharacter) {
+    playerImage.src = makeAvatarData(selectedCharacter.icon, selectedCharacter.color);
+  }
+  if (enemyCharacter) {
+    enemyImage.src = makeAvatarData(enemyCharacter.icon, enemyCharacter.color);
+  }
+}
+
+function showEffect(isCorrect) {
+  effectOverlay.textContent = isCorrect ? "正解" : "間違い";
+  effectOverlay.className = `effect-overlay show ${isCorrect ? "correct-hit" : "wrong-hit"}`;
   setTimeout(() => {
     effectOverlay.className = "effect-overlay";
-  }, 550);
+  }, 380);
 }
 
 function finishBattle(win) {
+  currentQuestion = null;
   toggleNumpad(false);
   startButton.disabled = false;
-  currentQuestion = null;
+
   if (win) {
-    feedbackEl.textContent = "🏆 Win! 敵をたおした！";
-    questionLabel.textContent = "バトル勝利！";
-    showEffect("win", "WIN");
+    feedbackEl.textContent = "🏆 勝利！";
+    questionLabel.textContent = "敵をたおした！";
+    enemyFighter.classList.add("defeated");
+    victoryText.classList.remove("hidden");
   } else {
-    feedbackEl.textContent = "💥 Lose... HPが0になった！";
-    questionLabel.textContent = "バトル敗北...";
-    showEffect("lose", "LOSE");
+    feedbackEl.textContent = "💥 敗北...";
+    questionLabel.textContent = "HPが0になった...";
   }
 }
 
 function showNextQuestion() {
-  if (enemyHp <= 0) {
-    finishBattle(true);
-    return;
-  }
-  if (playerHp <= 0) {
-    finishBattle(false);
-    return;
-  }
+  if (enemyHp <= 0) return finishBattle(true);
+  if (playerHp <= 0) return finishBattle(false);
 
   const q = generateUniqueQuestion();
-  if (!q) {
-    finishBattle(enemyHp === 0);
-    return;
-  }
+  if (!q) return finishBattle(false);
   currentQuestion = q;
   questionLabel.textContent = q.text;
   answerInput.value = "";
 }
 
 function startRound() {
-  if (!selectedLevel || !selectedCharacter) return;
+  if (!selectedLevel || !selectedCharacter || !enemyCharacter) return;
   askedSet = new Set();
   solvedCount = 0;
   playerHp = 10;
   enemyHp = ROUND_SIZE;
-  enemyName = ENEMIES[randomInt(0, ENEMIES.length - 1)];
   feedbackEl.textContent = "バトル開始！";
+  enemyFighter.classList.remove("defeated");
+  victoryText.classList.add("hidden");
   startButton.disabled = true;
   toggleNumpad(true);
   updateStatus();
@@ -263,11 +259,11 @@ function judgeAnswer(event) {
     enemyHp -= 1;
     solvedCount += 1;
     feedbackEl.textContent = "⚔️ こうげき成功！";
-    showEffect("attack", "ATTACK");
+    showEffect(true);
   } else {
     playerHp -= 1;
     feedbackEl.textContent = `🩸 ダメージ！正解は ${currentQuestion.answer}`;
-    showEffect("damage", "DAMAGE");
+    showEffect(false);
   }
   updateStatus();
   showNextQuestion();
@@ -302,23 +298,24 @@ function renderNumpad() {
   const enter = document.createElement("button");
   enter.type = "button";
   enter.className = "key enter";
-  enter.textContent = "回答";
+  enter.textContent = "攻撃";
   enter.addEventListener("click", () => answerForm.requestSubmit());
   numpad.appendChild(enter);
   toggleNumpad(false);
 }
 
 function renderCharacterSelect() {
-  PLAYER_CHARACTERS.forEach((name) => {
+  PLAYER_CHARACTERS.forEach((ch) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "character-button";
-    button.textContent = name;
+    button.innerHTML = `<img src="${makeAvatarData(ch.icon, ch.color)}" alt="${ch.name}"><span>${ch.name}</span>`;
     button.addEventListener("click", () => {
-      selectedCharacter = name;
+      selectedCharacter = ch;
       characterGrid.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
       button.classList.add("active");
-      selectedCharacterLabel.textContent = selectedCharacter;
+      updateStatus();
+      setFighters();
     });
     characterGrid.appendChild(button);
   });
@@ -336,17 +333,19 @@ function renderLevels(track) {
     button.innerHTML = `<strong>${level.label}</strong><span>${level.desc}</span>`;
     button.addEventListener("click", () => {
       selectedLevel = level;
+      enemyCharacter = ENEMIES[randomInt(0, ENEMIES.length - 1)];
       selectedLevelLabel.textContent = `${level.label}：${level.desc}`;
-      levelView.classList.add("hidden");
-      gameView.classList.remove("hidden");
-      enemyName = "???";
+      setFighters();
       updateStatus();
+      feedbackEl.textContent = `敵は「${enemyCharacter.name}」だ！`;
+      enemyFighter.classList.remove("defeated");
+      victoryText.classList.add("hidden");
       questionLabel.textContent = "「ラウンド開始」を押してください。";
-      feedbackEl.textContent = "";
+      currentQuestion = null;
       startButton.disabled = false;
       toggleNumpad(false);
-      effectOverlay.className = "effect-overlay";
-      currentQuestion = null;
+      levelView.classList.add("hidden");
+      gameView.classList.remove("hidden");
     });
     levelGrid.appendChild(button);
   });
@@ -358,27 +357,27 @@ function showModeView() {
   gameView.classList.add("hidden");
 }
 
-modeArithmeticButton.addEventListener("click", () => {
+document.getElementById("mode-arithmetic").addEventListener("click", () => {
   selectedTrack = "arithmetic";
   renderLevels(selectedTrack);
   modeView.classList.add("hidden");
   levelView.classList.remove("hidden");
 });
 
-modeMultiplicationButton.addEventListener("click", () => {
+document.getElementById("mode-multiplication").addEventListener("click", () => {
   selectedTrack = "multiplication";
   renderLevels(selectedTrack);
   modeView.classList.add("hidden");
   levelView.classList.remove("hidden");
 });
 
-backToModeButton.addEventListener("click", showModeView);
-backButton.addEventListener("click", () => {
+document.getElementById("back-to-mode-button").addEventListener("click", showModeView);
+document.getElementById("back-button").addEventListener("click", () => {
   gameView.classList.add("hidden");
   levelView.classList.remove("hidden");
   toggleNumpad(false);
-  currentQuestion = null;
   startButton.disabled = false;
+  currentQuestion = null;
 });
 
 answerForm.addEventListener("submit", judgeAnswer);
