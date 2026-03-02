@@ -42,6 +42,18 @@ h2 {
   display: none;
 }
 
+
+.mode-buttons {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+#back-to-mode-button {
+  margin-top: 0.75rem;
+  width: 100%;
+}
+
 .level-grid {
   display: grid;
   gap: 0.5rem;
