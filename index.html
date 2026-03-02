@@ -10,10 +10,19 @@
     <main class="app">
       <h1>四則演算トレーニング</h1>
 
-      <section id="landing-view" class="panel">
-        <h2>レベルを選んでね</h2>
+      <section id="mode-view" class="panel">
+        <h2>まずは種類をえらんでね</h2>
+        <div class="mode-buttons">
+          <button id="mode-arithmetic" type="button">足し算・引き算</button>
+          <button id="mode-multiplication" type="button">掛け算</button>
+        </div>
+      </section>
+
+      <section id="level-view" class="panel hidden">
+        <h2 id="level-view-title">レベルを選んでね</h2>
         <p class="description">1ラウンド10問。間違えた問題は最後に回って、正解するまで続きます。</p>
         <div id="level-grid" class="level-grid" aria-label="レベル一覧"></div>
+        <button id="back-to-mode-button" type="button">種類選択に戻る</button>
       </section>
 
       <section id="game-view" class="hidden">
